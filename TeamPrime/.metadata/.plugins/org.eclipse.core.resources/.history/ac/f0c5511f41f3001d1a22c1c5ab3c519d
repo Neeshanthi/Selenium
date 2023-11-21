@@ -1,0 +1,51 @@
+package openmrs_testcases;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+	
+public class LaunchOpenMRS {
+
+	@Parameters({"browser", "url"})
+	@Test(priority=1)
+	public void openBrowser(String browser, String url ) throws InterruptedException {
+		
+		if(browser.equalsIgnoreCase("chrome")) {
+
+		WebDriverManager.chromedriver().create();
+		}
+		else if(browser.equalsIgnoreCase("firefox")) {
+			WebDriverManager.firefoxdriver().create();
+		}
+		
+		driver.get(url);
+		System.out.println("Page title is: "+driver.getTitle());
+		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+	}
+		
+		@Parameters({"username", "password"})
+		@Test(priority=2)
+	public void loginTest(String username, String password){
+		driver.findElement(By.id("username")).sendKeys("username");
+		driver.findElement(By.id("password")).sendKeys("password");
+		driver.findElement(By.id("Inpatient Ward")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.id("loginButton")).click();
+		Thread.sleep(1000);
+		String actual = driver.findElement(By.xpath("//h4[normalize-space()='Logged in as Super User (admin) at Inpatient Ward.']"))
+				.getText();
+		String expected = "Logged in as Super User (admin) at Inpatient Ward.";
+		Assert.assertEquals(actual.trim(), expected);
+		System.out.println("This is the header: "+actual);
+		driver.findElement(By.xpath("//a[normalize-space()='Logout']")).click();
+		}
+
+	}

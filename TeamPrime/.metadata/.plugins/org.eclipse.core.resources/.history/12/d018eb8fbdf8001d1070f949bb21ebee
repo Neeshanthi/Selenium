@@ -1,0 +1,50 @@
+package prime_assignments;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.testng.annotations.Test;
+
+public class ReadExcelData {
+	
+	//workbook ->sheet->row ->cell
+	
+	@Test
+	public void getExcelData() throws IOException
+	
+	{
+		
+		File excel = new File("./src/test/resources/testdata/MMPLogin.xlsx");
+		FileInputStream fis = new FileInputStream(excel);
+		XSSFWorkbook mywb = new XSSFWorkbook(fis);
+		
+		//get the sheet from the workbook
+		XSSFSheet sheet = mywb.getSheetAt(0);
+		
+		//get the rows including header row. (Not based on index.)
+		int rows = sheet.getPhysicalNumberOfRows();
+		//get the rows based on index. index starts from 0.
+		//System.out.println(sheet.getLastRowNum());
+		int cols = sheet.getRow(0).getLastCellNum();
+		
+		String[][] mydata = new String[rows][cols];
+		for(int i=0; i<rows; i++) {
+			
+			for(int j=0; j<cols; j++) {
+				
+				//to convert the all the cell values to String format this class is used
+				DataFormatter df = new DataFormatter();
+				mydata[i][j]=df.formatCellValue(sheet.getRow(i).getCell(j));
+				
+				}
+			
+		}
+			mywb.close();
+			
+	}
+
+}

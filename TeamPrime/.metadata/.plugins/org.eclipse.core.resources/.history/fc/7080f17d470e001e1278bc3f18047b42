@@ -1,0 +1,55 @@
+package org.mmp.patientmodule.tests;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class ScheduleAppointmentTests {
+
+	WebDriver driver;
+
+	@BeforeClass
+	public void instantiateDriver() {
+		WebDriverManager.chromedriver().setup();
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+	}
+
+	@Parameters({ "url", "username", "password" })
+	@Test
+
+	public void TC_001_validateScheduleAppointment(String url, String username, String password) {
+		driver.get(url);
+		driver.findElement(By.id("username")).sendKeys(username);
+		driver.findElement(By.id("password")).sendKeys(password);
+		driver.findElement(By.name("submit")).click();
+		driver.findElement(By.linkText("Schedule Appointment")).click();
+		driver.findElement(By.cssSelector("input[value='Create new appointment']")).click();	
+		driver.findElement(By.xpath("//h4[normalize-space()='Dr.Charlie']/ancestor::ul/following-sibling::button")).click();
+		driver.switchTo().frame("myframe");
+		driver.findElement(By.id("datepicker")).click();
+		driver.findElement(By.linkText("Next")).click();
+		driver.findElement(By.linkText("20")).click();
+		driver.findElement(By.id("time")).click();
+	    {
+	      WebElement dropdown = driver.findElement(By.id("time"));
+	      dropdown.findElement(By.xpath("//option[. = '12Pm']")).click();
+	    }
+	    driver.findElement(By.id("ChangeHeatName")).click();
+	    driver.switchTo().defaultContent();
+	    driver.findElement(By.id("sym")).click();
+	    driver.findElement(By.id("sym")).sendKeys("Chest pain");
+	    driver.findElement(By.cssSelector("input[value='Submit']")).click();
+	    //Assert.assertEquals(driver.findElement(By.cssSelector("tr:nth-child(1) > td:nth-child(1)")).getText(),"07/20/2023");
+	    Assert.assertEquals(driver.findElement(By.cssSelector("tr:nth-child(1) > td:nth-child(2)")).getText(), "12Pm");
+	    Assert.assertEquals(driver.findElement(By.cssSelector("tr:nth-child(1) > td:nth-child(3)")).getText(),"Chest pain");
+	    Assert.assertEquals(driver.findElement(By.cssSelector("tr:nth-child(1) > td:nth-child(4)")).getText(),"Charlie");
+
+	}
+}

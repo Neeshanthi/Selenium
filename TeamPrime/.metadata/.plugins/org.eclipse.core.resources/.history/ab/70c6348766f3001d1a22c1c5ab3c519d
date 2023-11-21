@@ -1,0 +1,38 @@
+package openmrs_testcases;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+
+public class LaunchMRS_Parameters {
+	
+	WebDriver driver;
+	
+	@Parameters({"browser", "url"})
+	@Test(priority=1)
+	public void openurltest(String browser, String url) {
+		
+		if(browser.equalsIgnoreCase("chrome")) {
+			
+			WebDriverManager.chromedriver().setup();
+			driver = new ChromeDriver();
+		}
+		else if(browser.equalsIgnoreCase("firefox")) {
+			
+			WebDriverManager.firefoxdriver().setup();
+			driver = new FirefoxDriver();
+						
+		}
+		
+		//To fetch the url from the xml
+		driver.get(url);
+		
+	}
+	
+
+}

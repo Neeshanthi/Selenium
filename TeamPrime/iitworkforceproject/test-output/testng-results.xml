@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="2" passed="2" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2023-06-17T23:34:48 CDT" name="Suite" finished-at="2023-06-17T23:35:20 CDT" duration-ms="31275">
+    <groups>
+    </groups>
+    <test started-at="2023-06-17T23:34:48 CDT" name="Test" finished-at="2023-06-17T23:35:20 CDT" duration-ms="31275">
+      <class name="org.mmp.patientmodule.tests.MMP_002_LoginTests">
+        <test-method is-config="true" signature="instantiateDriver()[pri:0, instance:org.mmp.patientmodule.tests.MMP_002_LoginTests@2dc54ad4]" started-at="2023-06-17T23:34:49 CDT" name="instantiateDriver" finished-at="2023-06-17T23:34:50 CDT" duration-ms="1375" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- instantiateDriver -->
+        <test-method signature="TC_001_validateLogin(java.lang.String,java.lang.String,java.lang.String)[pri:0, instance:org.mmp.patientmodule.tests.MMP_002_LoginTests@2dc54ad4]" started-at="2023-06-17T23:34:50 CDT" name="TC_001_validateLogin" finished-at="2023-06-17T23:35:19 CDT" duration-ms="28883" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[http://96.84.175.78/MMP-Release2-Integrated-Build.6.8.000/portal/login.php]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[ria1]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[Ria12345]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- TC_001_validateLogin -->
+        <test-method signature="TC_002_invalidLogin(java.lang.String,java.lang.String,java.lang.String)[pri:0, instance:org.mmp.patientmodule.tests.MMP_002_LoginTests@2dc54ad4]" started-at="2023-06-17T23:35:19 CDT" name="TC_002_invalidLogin" finished-at="2023-06-17T23:35:20 CDT" duration-ms="984" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[http://96.84.175.78/MMP-Release2-Integrated-Build.6.8.000/portal/login.php]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[ria1]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[Ria1234]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- TC_002_invalidLogin -->
+      </class> <!-- org.mmp.patientmodule.tests.MMP_002_LoginTests -->
+    </test> <!-- Test -->
+  </suite> <!-- Suite -->
+</testng-results>

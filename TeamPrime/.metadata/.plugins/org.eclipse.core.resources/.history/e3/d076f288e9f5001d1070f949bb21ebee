@@ -1,0 +1,45 @@
+package prime_assignments;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class LoginUsingDP {
+	
+	@Test(dataProvider = "loginTD")
+	public void LoginTest(String Username, String Password) {
+		
+		WebDriverManager.chromedriver().setup();
+		WebDriver driver =new ChromeDriver();
+		driver.get("http://96.84.175.78/MMP-Release2-Integrated-Build.6.8.000/portal/login.php");
+		driver.findElement(By.id("username")).sendKeys("Username");
+		driver.findElement(By.id("password")).sendKeys("Password");
+		driver.findElement(By.name("submit")).click();
+		Assert.assertTrue(driver.findElement(By.xpath("//span[@class = 'username']")).isDisplayed());
+		String expectedTitle1 = "home";
+		String actualTitle1 = driver.getTitle();
+		Assert.assertEquals(actualTitle1, expectedTitle1);
+		driver.quit();
+		
+	}
+	
+	@DataProvider(name="loginTD")
+	public Object[][] Logintestdata() {
+		
+		Object[][] testdata= new Object[2][2];
+		testdata[0][0] = "ria1";
+		testdata[0][1] = "Ria12345";
+		
+		testdata[1][0] = "admin";
+		testdata[1][1] = "Ria12345";
+		
+		return testdata;
+						
+	}
+
+}

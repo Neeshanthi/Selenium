@@ -1,0 +1,167 @@
+package org.mmp.patientmodule.tests;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class ScheduleAppointmentTests {
+
+	WebDriver driver;
+
+	@BeforeClass
+	public void instantiateDriver() {
+		WebDriverManager.chromedriver().setup();
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+	}
+
+	@Parameters({ "url", "username", "password" })
+	@Test
+
+	public void TC_001_validateScheduleAppointment(String url, String username, String password) {
+		driver.get(url);
+		driver.findElement(By.id("username")).sendKeys(username);
+		driver.findElement(By.id("password")).sendKeys(password);
+		driver.findElement(By.name("submit")).click();
+		driver.findElement(By.linkText("Schedule Appointment")).click();
+		driver.findElement(By.cssSelector("input[value='Create new appointment']")).click();	
+		driver.findElement(By.xpath("//h4[normalize-space()='Dr.Charlie']/ancestor::ul/following-sibling::button")).click();
+		driver.switchTo().frame("myframe");
+		driver.findElement(By.id("datepicker")).click();
+		driver.findElement(By.linkText("Next")).click();
+		driver.findElement(By.linkText("20")).click();
+		driver.findElement(By.id("time")).click();
+	    {
+	      WebElement dropdown = driver.findElement(By.id("time"));
+	      dropdown.findElement(By.xpath("//option[. = '12Pm']")).click();
+	    }
+	    driver.findElement(By.id("ChangeHeatName")).click();
+	    driver.switchTo().defaultContent();
+	    driver.findElement(By.id("sym")).click();
+	    driver.findElement(By.id("sym")).sendKeys("Chest pain");
+	    driver.findElement(By.cssSelector("input[value='Submit']")).click();
+	    //Assert.assertEquals(driver.findElement(By.cssSelector("tr:nth-child(1) > td:nth-child(1)")).getText(),"07/20/2023");
+	    Assert.assertEquals(driver.findElement(By.cssSelector("tr:nth-child(1) > td:nth-child(2)")).getText(), "12Pm");
+	    Assert.assertEquals(driver.findElement(By.cssSelector("tr:nth-child(1) > td:nth-child(3)")).getText(),"Chest pain");
+	    Assert.assertEquals(driver.findElement(By.cssSelector("tr:nth-child(1) > td:nth-child(4)")).getText(),"Charlie");
+
+	}
+	
+	@Parameters({"url","username","password","drName"})
+	@Test
+	public void TC_002_validateScheduleAppointment(String url,String username,String password,String drName)
+	{
+
+		driver.get(url);
+		driver.findElement(By.id("username")).sendKeys(username);
+		driver.findElement(By.id("password")).sendKeys(password);
+		driver.findElement(By.name("submit")).click();
+		driver.findElement(By.linkText("Schedule Appointment")).click();
+		driver.findElement(By.cssSelector("input[value='Create new appointment']")).click();	
+		String expectedDrName = drName;
+		driver.findElement(By.xpath("//h4[normalize-space()='Dr."+expectedDrName+"']/ancestor::ul/following-sibling::button")).click();
+		driver.switchTo().frame("myframe");
+		driver.findElement(By.id("datepicker")).click();
+		driver.findElement(By.linkText("Next")).click();
+		driver.findElement(By.linkText("20")).click();
+		String expectedDate   = driver.findElement(By.id("datepicker")).getText();
+		driver.findElement(By.id("time")).click();
+	    {
+	      WebElement dropdown = driver.findElement(By.id("time"));
+	      dropdown.findElement(By.xpath("//option[. = '12Pm']")).click();
+	    }
+	    String expectedTime=driver.findElement(By.id("time")).getText();
+	    driver.findElement(By.id("ChangeHeatName")).click();
+	    driver.switchTo().defaultContent();
+	    driver.findElement(By.id("sym")).click();
+	    driver.findElement(By.id("sym")).sendKeys("Chest pain");
+	    String expectedSym =    driver.findElement(By.id("sym")).getText();
+	    driver.findElement(By.cssSelector("input[value='Submit']")).click();
+	    String actualDate = driver.findElement(By.cssSelector("tr:nth-child(1) > td:nth-child(1)")).getText();
+	    String actualTime=driver.findElement(By.cssSelector("tr:nth-child(1) > td:nth-child(2)")).getText();
+	    String actualSym = driver.findElement(By.cssSelector("tr:nth-child(1) > td:nth-child(3)")).getText();
+	    String actualDrName= driver.findElement(By.cssSelector("tr:nth-child(1) > td:nth-child(4)")).getText();
+	    Assert.assertEquals( actualDate,expectedDate);
+	    Assert.assertEquals(actualTime , expectedTime);
+	    Assert.assertEquals( actualSym,expectedSym);
+	    Assert.assertEquals( actualDrName,expectedDrName);
+	}
+	@Parameters({"url","username","password","drName"})
+	@Test
+	public void TC_003_validateScheduleAppointment(String url,String username,String password,String drName)
+	{
+
+		driver.get(url);
+		driver.findElement(By.id("username")).sendKeys(username);
+		driver.findElement(By.id("password")).sendKeys(password);
+		driver.findElement(By.name("submit")).click();
+		driver.findElement(By.linkText("Schedule Appointment")).click();
+		driver.findElement(By.cssSelector("input[value='Create new appointment']")).click();	
+		String expectedDrName = drName;
+		driver.findElement(By.xpath("//h4[normalize-space()='Dr."+expectedDrName+"']/ancestor::ul/following-sibling::button")).click();
+		driver.switchTo().frame("myframe");
+		driver.findElement(By.id("datepicker")).click();
+		String result = getFutureDate(10,"MMMM/dd/yyyy");
+		String dateArr[]=result.split("/");
+		String expectedYear=dateArr[2];
+		String expectedMonth = dateArr[0];//Aug
+		String expectedDay = dateArr[1];
+		 
+		String actualYear = driver.findElement(By.cssSelector(".ui-datepicker-year")).getText();//June
+		while(!(expectedYear.equals(actualYear)))
+		{
+			driver.findElement(By.linkText("Next")).click();
+			actualYear = driver.findElement(By.cssSelector(".ui-datepicker-year")).getText();
+		}
+		String actualMonth = driver.findElement(By.cssSelector(".ui-datepicker-month")).getText();//June
+		while(!(expectedMonth.equals(actualMonth)))
+		{
+			driver.findElement(By.linkText("Next")).click();
+			actualMonth = driver.findElement(By.cssSelector(".ui-datepicker-month")).getText();
+		}
+		
+		driver.findElement(By.linkText(expectedDay)).click();
+		String expectedDate   = driver.findElement(By.id("datepicker")).getText();
+		driver.findElement(By.id("time")).click();
+	    {
+	      WebElement dropdown = driver.findElement(By.id("time"));
+	      dropdown.findElement(By.xpath("//option[. = '12Pm']")).click();
+	    }
+	    String expectedTime=driver.findElement(By.id("time")).getText();
+	    driver.findElement(By.id("ChangeHeatName")).click();
+	    driver.switchTo().defaultContent();
+	    driver.findElement(By.id("sym")).click();
+	    driver.findElement(By.id("sym")).sendKeys("Chest pain");
+	    String expectedSym =    driver.findElement(By.id("sym")).getText();
+	    driver.findElement(By.cssSelector("input[value='Submit']")).click();
+	    String actualDate = driver.findElement(By.cssSelector("tr:nth-child(1) > td:nth-child(1)")).getText();
+	    String actualTime=driver.findElement(By.cssSelector("tr:nth-child(1) > td:nth-child(2)")).getText();
+	    String actualSym = driver.findElement(By.cssSelector("tr:nth-child(1) > td:nth-child(3)")).getText();
+	    String actualDrName= driver.findElement(By.cssSelector("tr:nth-child(1) > td:nth-child(4)")).getText();
+	    Assert.assertEquals( actualDate,expectedDate);
+	    Assert.assertEquals(actualTime , expectedTime);
+	    Assert.assertEquals( actualSym,expectedSym);
+	    Assert.assertEquals( actualDrName,expectedDrName);
+	}
+	public String getFutureDate(int noofdays,String pattern)
+	{
+
+		Calendar cal = 	Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_MONTH, noofdays);
+		Date d = cal.getTime();
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+		String formatDate = sdf.format(d);
+		return formatDate;
+	}
+}
+

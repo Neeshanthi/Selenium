@@ -1,0 +1,17 @@
+package org.mmp.patientmodule.tests;
+import org.testng.annotations.Test;
+
+
+
+public class MMP_002_LoginTests {
+	
+	@Test
+	
+	public void validateLogin() {
+		
+	
+		
+		
+	}
+
+}

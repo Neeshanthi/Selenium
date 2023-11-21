@@ -1,0 +1,33 @@
+package openmrs_testcases;
+
+
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class FetchDynamicStocks {
+	
+	
+	@Test
+	public void FetchStockName() {
+		
+		WebDriver driver=WebDriverManager.chromedriver().create();
+		driver.manage().window().maximize();
+		driver.get("https://money.rediff.com/gainers/bse/daily/groupa?src=gain_lose");
+		System.out.println("This is the page title: "+ driver.getTitle());
+		
+		List<WebElement> rows = driver.findElements(By.xpath("//table[@class='dataTable']/tbody/tr"));
+		System.out.println(rows.size());
+		
+
+		}
+		
+	}
+	
+	
+

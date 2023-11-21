@@ -1,0 +1,12 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="openmrs_testcases" verbose="1">
+	
+	<parameter name ="browser" value="chrome"/>
+	<parameter name ="url" value="https://demo.openmrs.org/openmrs/login.htm"/>
+	<test name="parameterstest">
+		<classes>
+			<class name="LaunchMRS_Parameters" />
+		</classes>
+	</test>
+</suite>

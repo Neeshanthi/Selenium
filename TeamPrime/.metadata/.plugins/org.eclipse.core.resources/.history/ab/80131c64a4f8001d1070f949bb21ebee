@@ -1,0 +1,26 @@
+package prime_assignments;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class ReadExcelData {
+	
+	//workbook ->sheet->row ->cell
+	
+	public void getExcelData() throws IOException
+	{
+		
+		File excel = new File("./src/test/resources/testdata/MMPLogin.xlsx");
+		FileInputStream fis = new FileInputStream(excel);
+		XSSFWorkbook mywb = new XSSFWorkbook(fis);
+		
+		
+		
+		
+		
+	}
+
+}

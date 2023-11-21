@@ -1,0 +1,62 @@
+package org.mmp.patientmodule.tests;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+
+public class MMP_002_LoginTests {
+	
+	WebDriver driver;
+	
+	@BeforeClass
+	public void instantiateDriver() 
+	{
+	WebDriverManager.chromedriver().setup();
+	driver =new ChromeDriver();
+	driver.manage().window().maximize();
+	}
+	
+	
+	@Parameters({"url","username","password"})
+	@Test
+		
+	public void TC_001_validateLogin(String url, String username, String password)
+	{
+		driver.get(url);
+		driver.findElement(By.id("username")).sendKeys(username);
+		driver.findElement(By.id("password")).sendKeys(password);
+		driver.findElement(By.name("submit")).click();
+		String actual=driver.findElement(By.xpath("//h3[normalize-space()='Patient Portal']")).getText();
+		String expected = "Patient Portal";
+		Assert.assertEquals(expected, actual);
+		driver.findElement(By.xpath("//span[normalize-space()='Logout']")).click();
+		driver.close();
+					
+	}
+	
+	@Parameters({"url","invalidusername","invalidpassword"})
+	@Test
+		
+	public void TC_002_invalidLogin(String url, String invalidusername, String invalidpassword) 
+	{
+		
+		driver.get(url);
+		driver.findElement(By.id("username")).sendKeys(invalidusername);
+		driver.findElement(By.id("password")).sendKeys(invalidpassword);
+		driver.findElement(By.name("submit")).click();
+		Alert alrt = driver.switchTo().alert();
+		String actual = alrt.getText();
+		String expected = "Wrong username and password.";
+		Assert.assertEquals(expected, actual);
+		driver.close();
+					
+	}
+
+}
